@@ -21,6 +21,20 @@ CREATE TABLE Customer (
     customer_email VARCHAR(100) NOT NULL UNIQUE
 ) ENGINE=InnoDB;
 
+CREATE TABLE Order (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_quantity INT NOT NULL,
+    order_date DATETIME NOT NULL,
+    customer_id INT,
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE Product (
+    product_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    product_quantity INT NOT NULL,
+    product_price DECIMAL(10, 2)
+) ENGINE=InnoDB;
 
 
 --Tables With Check Constraints
@@ -38,6 +52,4 @@ CREATE TABLE Order(
     order_date DATE NOT NULL,
     customer_id INT NOT NULL,
     FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
-    CHECK (order_quantity <= (SELECT product_quantity FROM Product WHERE product_id = order_id)),
-    INDEX (order_date)
 ) ENGINE=InnoDB;
