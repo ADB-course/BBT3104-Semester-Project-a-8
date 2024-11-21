@@ -1,13 +1,17 @@
 -- Write your SQL code here
 
+
 DELIMITER //
 
-CREATE TRIGGER trg_update_stock
-AFTER UPDATE ON products
+CREATE TRIGGER trg_update_order_date
+AFTER UPDATE ON `Order`
 FOR EACH ROW
 BEGIN
-    INSERT INTO stock_log (product_id, old_quantity, new_quantity, updated_at)
-    VALUES (OLD.product_id, OLD.stock_quantity, NEW.stock_quantity, NOW());
+    IF NEW.order_quantity != OLD.order_quantity THEN
+        UPDATE `Order`
+        SET order_date = CURRENT_DATE
+        WHERE order_id = NEW.order_id;
+    END IF;
 END;
 //
 
