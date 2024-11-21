@@ -1,13 +1,14 @@
--- Write your SQL code here
+--calculates the total order value for a specific customer:
+
 DELIMITER //
 
-CREATE PROCEDURE calculate_total_sales(IN product_id INT, OUT total_sales DECIMAL(10, 2))
+CREATE PROCEDURE calc_total_order_value(IN customer_id INT, OUT total_value DECIMAL(10, 2))
 BEGIN
-    SELECT SUM(quantity * price) INTO total_sales
-    FROM order_details
-    WHERE product_id = product_id;
+    SELECT SUM(order_quantity * product_price) INTO total_value
+    FROM Order 
+    JOIN Product p ON o.order_id = p.product_id
+    WHERE o.customer_id = customer_id;
 END;
 //
 
 DELIMITER ;
-
